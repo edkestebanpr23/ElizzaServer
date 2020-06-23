@@ -1,7 +1,15 @@
 const Client = require('../../models/Client');
 
+const ClientRsvQ = {
+    getClients: async (_, { }) => {
+        const clients = await Client.find();
+        console.log(clients)
+        return clients;
+    }
+};
+
 const ClientRsvM = {
-    createClient: async (_, { input }, ctx) => {
+    createClient: async (_, { input }) => {
         const { telephone } = input;
         const client = await Client.findOne({ telephone });
 
@@ -25,7 +33,7 @@ const ClientRsvM = {
         let client = await Client.findById(id);
 
         if (!client) {
-            throw new Error('Client no encontrada');
+            throw new Error('not exist');
         }
 
         // Si la persona es el creador
@@ -43,7 +51,7 @@ const ClientRsvM = {
         let client = await Client.findById(id);
 
         if (!client) {
-            throw new Error('Client no encontrada');
+            throw new Error('not exist');
         }
 
         // Si la persona es el creador
@@ -58,4 +66,6 @@ const ClientRsvM = {
     }
 }
 
-module.exports = ClientRsvM;
+const ClientRsv = { ClientRsvQ, ClientRsvM };
+
+module.exports = ClientRsv;

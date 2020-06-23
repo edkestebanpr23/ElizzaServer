@@ -1,10 +1,12 @@
 const WorkerSchQ = `
-    
+    getWorkers: [DataWorker]
 `;
 
 const WorkerSchM = `
     createWorker(input: WorkerInput): Boolean
     loginWorker(input: LoginInput): DataWorker
+    updateWorker(id: ID!, input: ClientInput): DataWorker
+    deleteWorker(id: ID!): Boolean
 `;
 
 const WorkerExtra = `
@@ -32,6 +34,7 @@ const WorkerExtra = `
         telephone: String!
         img: String
         rol: String!
+        active: Boolean
     }
 `;
 

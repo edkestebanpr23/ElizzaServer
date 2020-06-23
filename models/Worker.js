@@ -31,7 +31,7 @@ const WorkerSchema = mongoose.Schema({
         require: true,
         trim: true
     },
-    state: {
+    active: {
         type: Boolean,
         default: true
     },

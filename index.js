@@ -17,11 +17,9 @@ const server = new ApolloServer({
   context: ({ req }) => {
     // Si no existe el token en el header "Usuario no logueado", entonces se le asigna un String vacío
     const token = req.headers['authorization'] || '';
-    // console.log(token);
     if (token) {
         try {
             const user = jwt.verify(token.replace('Bearer ', ''), process.env.SECRET);
-            // console.log(user);
             return { user };
         } catch (error) {
             console.log(error);

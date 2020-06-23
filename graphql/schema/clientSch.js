@@ -1,12 +1,11 @@
 const { gql } = require('apollo-server-express');
 
 const ClientSchQ = `
-    
+    getClients: [DataClient]
 `;
 
 const ClientSchM = `
     createClient(input: ClientInput): Boolean
-    #loginClient(input: LoginInput): DataClient
     updateClient(id: ID!, input: ClientInput): DataClient
     deleteClient(id: ID!): Boolean
 `;
@@ -29,6 +28,7 @@ const ClientExtra = `
         sex: String
         description: String
         worker: ID!
+        active: Boolean
     }
 
 

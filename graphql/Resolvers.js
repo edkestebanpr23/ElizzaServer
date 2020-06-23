@@ -1,9 +1,11 @@
-const WorkerRsvM = require('./resolvers/workerRsv');
-const ClientRsvM = require('./resolvers/clientRsv');
+const {WorkerRsvM, WorkerRsvQ } = require('./resolvers/workerRsv');
+const { ClientRsvM, ClientRsvQ } = require('./resolvers/clientRsv');
 
 const resolvers = {
     Query: {
       hello: () => 'Hello world!',
+      ...ClientRsvQ,
+      ...WorkerRsvQ
     },
     Mutation: {
       ...WorkerRsvM,

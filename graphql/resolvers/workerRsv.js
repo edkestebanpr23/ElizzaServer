@@ -23,6 +23,14 @@ const createToken = (worker, secret, expiresIn) => {
     return data;
 };
 
+const WorkerRsvQ = {
+    getWorkers: async (_, { }) => {
+        const worker = await Worker.find();
+        console.log(worker)
+        return worker;
+    }
+};
+
 const WorkerRsvM = {
     createWorker: async (_, { input }, ctx) => {
         const { name, document, password, telephone, rol } = input;
@@ -86,7 +94,44 @@ const WorkerRsvM = {
 
         // Dar acceso a la app
         return createToken(worker, process.env.SECRET, '1000 days');
+    },
+    updateWorker: async (_, { id, input }, ctx) => {
+        // Saber si la worker existe o no
+        let worker = await Worker.findById(id);
+
+        if (!worker) {
+            throw new Error('not exist');
+        }
+
+        // Si la persona no es el admin
+        if (ctx.user.rol !== 'admin') {
+            throw new Error('not permissions');
+        }
+
+        // Guardar y retornar worker
+        worker = await Worker.findOneAndUpdate({ _id: id }, input, { new: true });
+        return worker;
+    },
+    deleteWorker: async (_, { id }, ctx) => {
+        // Worker no se elimina, solo se actualiza el estado a inactivo
+        // Saber si la worker existe o no
+        let worker = await Worker.findById(id);
+
+        if (!worker) {
+            throw new Error('not exist');
+        }
+
+        // Si la persona no es el admin
+        if (ctx.user.rol !== 'admin' && ctx.user.rol !== 'worker') {
+            throw new Error('not permissions');
+        }
+
+        // Guardar y retornar la workere
+        worker = await Worker.findOneAndUpdate({ _id: id }, { active: false }, { new: true });
+        console.log(worker);
+        return true;
     }
 }
 
-module.exports = WorkerRsvM;
+const WorkerRsv = { WorkerRsvQ, WorkerRsvM };
+module.exports = WorkerRsv;
