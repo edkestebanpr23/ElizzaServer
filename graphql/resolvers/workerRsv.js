@@ -4,9 +4,9 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config({ path: 'variables.env' });
 
 const createToken = (worker, secret, expiresIn) => {
-    const { id, document } = worker;
+    const { id, document, rol } = worker;
 
-    const token = jwt.sign({ id, document }, secret, { expiresIn });
+    const token = jwt.sign({ id, document, rol }, secret, { expiresIn });
     data = {
         name: worker.name,
         telephone: worker.telephone,
@@ -24,31 +24,39 @@ const createToken = (worker, secret, expiresIn) => {
 };
 
 const WorkerRsvM = {
-    createWorker: async (_, { input }) => {
+    createWorker: async (_, { input }, ctx) => {
         const { name, document, password, telephone, rol } = input;
 
         // Verificar rol
         if (rol !== 'admin' && rol !== 'worker') {
+            console.log('error 11111');
             throw new Error('rol');
         }
 
-        console.log(name + " " + document + " " + password + " " + telephone + " " + rol);
+        if (ctx.user.rol !== 'admin') {
+            console.log('error 22222');
+            throw new Error('not admin');
+        }
+
 
         const worker = await Worker.findOne({ document });
 
         console.log(worker);
         // Si el usuario ya existe
         if (worker) {
+            console.log('error 33333');
             throw new Error('exist');
         }
 
         try {
+            console.log('error 44444');
             // Hasheasr password
             /**
              * El salt hashea y genera una cadena muy dificil de hackear
              */
             const salt = await bcryptjs.genSalt(10);
             input.password = await bcryptjs.hash(password, salt);
+            console.log('error 55555');
 
             const newWorker = new Worker(input);
             newWorker.save();

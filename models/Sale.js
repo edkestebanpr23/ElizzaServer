@@ -9,7 +9,7 @@ const SaleSchema = mongoose.Schema({
     client: {
         type: mongoose.Types.ObjectId,
         require: true,
-        ref: 'User'
+        ref: 'Client'
     },
     finalized: {
         type: Boolean,

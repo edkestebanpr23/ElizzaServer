@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UserSchema = mongoose.Schema({
+const ClientSchema = mongoose.Schema({
     name: {
         type: String,
         require: true,
@@ -13,7 +13,8 @@ const UserSchema = mongoose.Schema({
     telephone: {
         type: String,
         require: true,
-        trim: true
+        trim: true,
+        unique: true
     },
     telephone2: {
         type: String,
@@ -31,7 +32,11 @@ const UserSchema = mongoose.Schema({
         type: mongoose.Types.ObjectId,
         require: true,
         ref: 'Worker'
+    },
+    active: {
+        type: Boolean,
+        default: true
     }
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Client', ClientSchema);
