@@ -13,7 +13,7 @@ const SaleSchema = mongoose.Schema({
     },
     finalized: {
         type: Boolean,
-        default: true
+        require: true
     },
     total: {
         type: Number,
@@ -28,13 +28,15 @@ const SaleSchema = mongoose.Schema({
         trim: true
     },
     products: {
-        default: []
+        type: Array,
+        default: [],
     },
     separate: {
         type: Boolean,
-        default: false
+        require: true
     },
     payment: {
+        type: Array,
         default: []
     },
     cellar: {

@@ -38,6 +38,6 @@ const WorkerExtra = `
     }
 `;
 
-const UserSch = { WorkerSchQ, WorkerSchM, WorkerExtra };
+const WorkerSch = { WorkerSchQ, WorkerSchM, WorkerExtra };
 
-module.exports = UserSch;
+module.exports = WorkerSch;
