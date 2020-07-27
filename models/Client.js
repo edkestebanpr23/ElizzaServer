@@ -20,6 +20,10 @@ const ClientSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    whatsapp: {
+        type: String,
+        trim: true
+    },
     sex: {
         type: String,
         trim: true

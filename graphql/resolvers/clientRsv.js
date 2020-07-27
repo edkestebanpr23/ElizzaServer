@@ -3,20 +3,36 @@ const Client = require('../../models/Client');
 const ClientRsvQ = {
     getClients: async (_, { }) => {
         const clients = await Client.find();
-        console.log(clients)
+        let d = new Date();
+        console.log('getClients -> ', d);
         return clients;
+    },
+    getClient: async (_, { id }) => {
+        const client = await Client.findById({'_id': id});
+        console.log(client);
+        return client;
     }
 };
 
 const ClientRsvM = {
-    createClient: async (_, { input }) => {
+    createClient: async (_, { input }, ctx) => {
         const { telephone } = input;
+        console.log('Context', ctx);
+        input.worker = ctx.user.id;
         const client = await Client.findOne({ telephone });
 
         console.log(client);
+        
         // Si el usuario ya existe
         if (client) {
-            throw new Error('exist');
+            // Si existe pero estaba desactivado...
+            if (client.active == false) {
+                input.active = true;
+                await Client.findOneAndUpdate({ _id: id }, input, { new: true });
+                return true;
+            } else {
+                throw new Error('exist');
+            }
         }
 
         try {

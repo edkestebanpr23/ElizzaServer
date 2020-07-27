@@ -31,11 +31,11 @@ const SaleSchema = mongoose.Schema({
         type: Array,
         default: [],
     },
-    separate: {
+    credit: {
         type: Boolean,
         require: true
     },
-    payment: {
+    payments: {
         type: Array,
         default: []
     },

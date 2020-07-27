@@ -1,4 +1,5 @@
 const { GraphQLScalarType } = require('graphql');
+const { Kind } = require("graphql/language");
 
 const { WorkerRsvM, WorkerRsvQ } = require('./resolvers/workerRsv');
 const { ClientRsvM, ClientRsvQ } = require('./resolvers/clientRsv');
@@ -6,11 +7,20 @@ const { SaleRsvM, SaleRsvQ } = require('./resolvers/saleRsv');
 
 const resolvers = {
     DateTime: new GraphQLScalarType({
-      name: 'DateTime',
-      description: 'Equivalents new Date() in js',
-      serialize: (value) => value.toISOString(),
-      parseValue: (value) => new Date(value),
-      parseLiteral: (ast) => new Date(ast.value)
+      name: 'Date',
+      description: 'Date custom scalar type',
+      parseValue(value) {
+        return new Date(value); // value from the client
+      },
+      serialize(value) {
+        return value.getTime(); // value sent to the client
+      },
+      parseLiteral(ast) {
+        if (ast.kind === Kind.INT) {
+          return new Date(+ast.value) // ast value is always in string format
+        }
+        return null;
+      },
     }),
     Query: {
       hello: () => 'Hello world!',
